@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block body %}
+{% if edit %} 
+    <form method="POST" action="/posts/edit/{{id}}">
+        <div style="width:30rem;" class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="{{title}}">
+        </div>
+        <div  style="width:30rem;" class="form-group">
+        <label for="exampleInputContent1">Content</label>
+        <textarea rows="4" type="text" class="form-control" name="content" placeholder="Content" id="exampleInputContent1">{{content}}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Edit</button>
+    </form>
+{% else %}
+    <form method="POST" action="/new_post" enctype="multipart/form-data">
+        <div style="width:30rem;" class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="Title">
+        </div>
+        <div  style="width:30rem;" class="form-group">
+        <label for="exampleInputContent1">Content</label>
+        <textarea rows="4" type="text" class="form-control" name="content" id="exampleInputContent1" placeholder="Content"></textarea>
+        </div>
+        <label for="image">Image</label>
+        <div class="custom-file">
+            <input name="image" type="file">
+          </div>
+        <button style="margin-top: 1.5rem;" type="submit" class="btn btn-primary">Create</button>
+    </form>
+{% endif %}
+{% endblock %}
