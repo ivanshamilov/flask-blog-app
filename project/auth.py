@@ -26,7 +26,7 @@ def login_post():
 
     login_user(user, remember=remember)
 
-    return redirect('/my_posts')
+    return redirect('/posts')
 
 
 @auth.route('/signup')
@@ -52,7 +52,7 @@ def signup_post():
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect('/login')
+    return redirect('/posts')
 
 
 @auth.route('/logout')

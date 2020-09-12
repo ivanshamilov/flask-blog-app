@@ -1,33 +1,69 @@
 {% extends "base.html" %}
 
 {% block body %}
-{% for post in posts %}
-    <div class="card mb-3" style="max-width: 540px; min-width: 540px;">
-      <div class="row no-gutters">
-        <div class="col-md-4">
-          <img src="{{ url_for('static', filename='uploads/' + post.image) }}" class="card-img" alt="Image Here">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h4 class="card-title"><a style="color: black; text-decoration: none;"href="/posts/{{post.id}}">{{post.title}}</a></h4>
-            {% if current_user.name == post.author %}
+{% for post in posts.items %}
+<div class="card mb-3" style="width:auto; height: auto;">
+  <div class="row no-gutters">
+      <div class="col-md-4">
+      <img src="{{ url_for('static', filename='uploads/' + post.image) }}" class="card-img" alt="Image Here">
+      </div>
+      <div class="col-md-8">
+      <div class="card-body" style="display: flex; height: 100%; flex-direction: column; justify-content: space-between;">
+          <div>
+              <h4 class="card-title"><a style="color: black; text-decoration: none;"href="/post/{{post.id}}">{{post.title}}</a></h4>
+              {% if current_user == post.author %}
                 <h6 class="card-title">Posted by: You</h6>
             {% else %}
-              <h6 class="card-title">Posted by: {{post.author}}</h6>
+              <h6 class="card-title">Posted by: {{post.author.name}}</h6>
             {% endif %}
-            <p style="white-space: nowrap;
+          </div>
+          <p style="white-space: nowrap;
                       overflow: hidden;
                       text-overflow: ellipsis;
                       max-width: 75ch;" class="card-text">{{post.content}}
-            </p>
-            <div class="card-text">
-              <small class="text-muted">Posted: {{post.date_posted}}</small>
-              <br>
-              <small class="text-muted">Last updated: {{post.date_modified}}</small>
-            </div>
+              </p>
+          <div style="display: flex; flex-direction: columnn; justify-content: space-between; align-items: center;">
+              <div class="card-text" style="margin-bottom: 0.5rem;">
+                <small class="text-muted">Tags:
+                  {% for tag in post.tags_list %}
+                    #{{tag.name}}
+                  {% endfor %}
+                </small>
+                <br>
+                  <small class="text-muted">Posted: {{post.date_posted}}</small>
+                  <br>
+                  <small class="text-muted">Last updated: {{post.date_modified}}</small>
+                </div>
+  
           </div>
-        </div>
       </div>
-    </div>
+      </div>
+  </div>
+  </div>
+
   {% endfor%}
+
+{% if posts.items %}
+  <div style="display: flex; margin: 3rem;">
+    {% if posts.has_prev %} 
+      <a href="{{ url_for('main.posts', page=posts.prev_num) }}">
+        &lt;&lt;
+      </a>
+    {% else %}
+      &lt;&lt; 
+    {% endif %}
+      <span style="margin:0 1.5rem;">|</span>
+    {% if posts.has_next %}
+      <a href="{{ url_for('main.posts', page=posts.next_num) }}">
+        &gt;&gt;
+      </a>
+    {% else %}
+      &gt;&gt;
+    {% endif %}
+  </div>
+{% else %}
+<h1>No posts found.</h1>
+{% endif %}
+
+
 {% endblock %}
